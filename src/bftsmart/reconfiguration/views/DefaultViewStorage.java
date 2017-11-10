@@ -41,6 +41,16 @@ public class DefaultViewStorage implements ViewStorage {
         path = path + sep + "currentView";
     }
 
+    public DefaultViewStorage(String configHome) {
+        String sep = System.getProperty("file.separator");
+        path = configHome;
+        File f = new File(path);
+        if (!f.exists()) {
+            path = System.getProperty("user.dir") + sep + "config";
+        }
+        path = path + sep + "currentView";
+    }
+
     @Override
     public boolean storeView(View view) {
         if (!view.equals(readView())) {

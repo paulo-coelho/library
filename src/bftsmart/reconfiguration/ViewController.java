@@ -17,6 +17,8 @@ package bftsmart.reconfiguration;
 
 import java.net.SocketAddress;
 
+import bftsmart.reconfiguration.util.Configuration;
+import bftsmart.reconfiguration.util.HostsConfig;
 import bftsmart.reconfiguration.util.TOMConfiguration;
 import bftsmart.reconfiguration.views.DefaultViewStorage;
 import bftsmart.reconfiguration.views.View;
@@ -32,6 +34,7 @@ public class ViewController {
     protected View currentView = null;
     private TOMConfiguration staticConf;
     private ViewStorage viewStore;
+    private String configHome = "";
 
     public ViewController(int procId) {
         this.staticConf = new TOMConfiguration(procId);
@@ -39,6 +42,7 @@ public class ViewController {
 
     
     public ViewController(int procId, String configHome) {
+        this.configHome = configHome;
         this.staticConf = new TOMConfiguration(procId, configHome);
     }
 
@@ -49,7 +53,7 @@ public class ViewController {
             try {
                 this.viewStore = (ViewStorage) Class.forName(className).newInstance();
             } catch (Exception e) {
-                this.viewStore = new DefaultViewStorage();
+                this.viewStore = new DefaultViewStorage(configHome);
             }
 
         }
